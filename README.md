@@ -1,9 +1,6 @@
-# Protocol Name
+# BattleChain Confidence Pools
 
-BattleChain Confidence Pools
-
-
-### Prize Pool TO BE FILLED OUT BY CYFRIN
+### Prize Pool
 
 - Total Pool - $12000
 - H/M - $10000
