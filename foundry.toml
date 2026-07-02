@@ -1,0 +1,24 @@
+[profile.default]
+src = "src"
+test = "test"
+script = "script"
+out = "out"
+libs = ["lib"]
+solc = "0.8.26"
+via_ir = true
+optimizer = true
+optimizer_runs = 200
+remappings = [
+    "forge-std/=lib/forge-std/src/",
+    "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
+    "@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/",
+    "@battlechain/=lib/battlechain-safe-harbor-contracts/src/",
+    # The submodule's interfaces import their own types via a bare `src/types/...` path. We have no
+    # `src/types/` of our own, so map it globally to the submodule (a context-scoped remapping
+    # would work for solc but not the `forge lint` / solar pass that CI's `build --sizes` runs).
+    "src/types/=lib/battlechain-safe-harbor-contracts/src/types/",
+]
+
+[rpc_endpoints]
+battlechain_testnet = "${BATTLECHAIN_TESTNET_RPC}"
+battlechain_mainnet = "${BATTLECHAIN_MAINNET_RPC}"
