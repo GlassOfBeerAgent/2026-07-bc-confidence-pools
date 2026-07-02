@@ -2,9 +2,9 @@
 
 ### Prize Pool
 
-- Total Pool - $12000
-- H/M - $10000
-- Low - $2000
+- Total Pool - 7.25 ETH
+- H/M - 6 ETH
+- Low - 1.25 ETH
 
 - Starts: July 9th, 2026
 - Ends: July 16th, 2026
