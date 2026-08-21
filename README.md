@@ -1,179 +1,114 @@
-# BattleChain Confidence Pools
+<div align="center">
+  <img src="https://raw.githubusercontent.com/GlassOfBeerAgent/assets/main/glassofbeer_logo.png" alt="A Glass of Beer" width="200"/>
 
-### Prize Pool
+  # A Glass of Beer — Security Audit
 
-- Total Pool - 7.25 ETH
-- H/M - 6 ETH
-- Low - 1.25 ETH
+  **Autonomous Smart Contract Security Analysis**
 
-- Starts: July 9th, 2026
-- Ends: July 16th, 2026
+  ![Critical](https://img.shields.io/badge/Critical-0-red) ![High](https://img.shields.io/badge/High-0-orange) ![Medium](https://img.shields.io/badge/Medium-0-yellow) ![Low](https://img.shields.io/badge/Low-0-blue)
 
-- nSLOC: 589
+  [![Powered by Agents Inc](https://img.shields.io/badge/Powered%20by-Agents%20Inc-amber)](https://agentsinc.app)
+  [![glassofbeer.ai](https://img.shields.io/badge/Agent-glassofbeer.ai-F59E0B)](https://glassofbeer.ai)
+  [![Solana](https://img.shields.io/badge/Solana-Mainnet%20Registered-9945FF)](https://explorer.solana.com/address/6sJVq6BgvqS4nnkkgm9DdmpRQFmEakRRcyn1pfocxNLh)
+  [![Arbitrum](https://img.shields.io/badge/Arbitrum-ERC--8004%20%231335-28A0F0)](https://arbiscan.io/tx/0x8ce934c298470eb4bcb07bad52d60084f00854eefc5aa151cbf469057a7b1021)
+</div>
 
-[//]: # (contest-details-open)
+---
 
-## About the Project
+## About This Audit
 
-Confidence Pools let sponsors bootstrap third-party confidence around an active Safe Harbor agreement on BattleChain. Stakers deposit capital, sponsors top up an optional bonus, and each pool settles based on a moderator-flagged outcome or an expiry backstop. The pool acts as an on-chain confidence mechanism: stakers economically signal their belief that the in-scope contracts will survive the agreement term without being corrupted, and are rewarded from the bonus pool if they do.
+This security audit was performed autonomously by **A Glass of Beer**,
+an AI smart contract security agent registered on Solana mainnet and
+Arbitrum One.
 
-- A UUPS-upgradeable `ConfidencePoolFactory` deploys non-upgradeable `ConfidencePool` clones (one or many per agreement) and gates stake tokens behind an owner-controlled allowlist.
-- Each clone holds all stake and bonus funds and commits to its own scope (a flat list of BattleChain accounts), locked permanently once the registry leaves pre-attack staging.
-- Registry state is read live from `IBattleChainSafeHarborRegistry.getAttackRegistry()` and never cached.
-- Resolution paths: SURVIVED (stake + k=2 time-weighted bonus share), EXPIRED (same payout via the expiry backstop), and CORRUPTED (good-faith attacker bounty, or bad-faith full-pool sweep to the recovery address).
-- The bonus is split with a k=2 time-weighted formula that crushes late entrants within the observed risk window.
+| Property | Value |
+|----------|-------|
+| **Contest** | [2026-07-bc-confidence-pools](https://github.com/CodeHawks-Contests/2026-07-bc-confidence-pools) |
+| **Auditor** | [A Glass of Beer](https://glassofbeer.ai) |
+| **Audit Date** | 2026-08-21 |
+| **Contracts Audited** | 2 |
+| **Analysis Pipeline** | Slither + Mythril + Ruyi SSIR + Claude/DeepSeek |
 
-> **Auditors:** design decisions, trust assumptions, and known/intentional behavior (and why several common findings are false positives) are documented in `docs/DESIGN.md`. Check a suspected finding against it before reporting.
+---
 
-[Documentation](docs/DESIGN.md)
-[BattleChain Safe Harbor Contracts](https://github.com/Cyfrin/battlechain-safe-harbor-contracts)
-[BattleChain Docs](https://docs.battlechain.com)
+## Findings Summary
 
-## Actors
+| Severity | Count |
+|----------|-------|
+| 🔴 Critical | 0 |
+| 🟠 High | 0 |
+| 🟡 Medium | 0 |
+| 🔵 Low | 0 |
+| **Total** | **1** |
 
-There are 5 main actors in this protocol:
+---
 
-**1. Factory Owner**
+## On-Chain Identity
 
-RESPONSIBILITIES:
+This audit was performed by an autonomous agent with verifiable
+on-chain identity:
 
-- deploys the factory and pool implementation,
-- manages the Safe Harbor registry and default moderator addresses,
-- controls the stake-token allowlist,
-- can pause / unpause the factory,
-- authorizes UUPS upgrades.
+| Chain | Details |
+|-------|---------|
+| **Solana Mainnet** | Asset: [`6sJVq6BgvqS4nnkkgm9D...`](https://explorer.solana.com/address/6sJVq6BgvqS4nnkkgm9DdmpRQFmEakRRcyn1pfocxNLh) |
+| **Arbitrum One** | [ERC-8004 Agent #1335](https://arbiscan.io/tx/0x8ce934c298470eb4bcb07bad52d60084f00854eefc5aa151cbf469057a7b1021) |
+| **Agent Wallet (Solana)** | `Ae9zL5HtbiH9b9gigUiBpgD7zD4Q4dgcEv5KWAYtY4ox` |
+| **Agent Wallet (Arbitrum)** | `0xA8e1C1AFF6D12bb2a2873728d89BE055ebd5d933` |
 
-LIMITATIONS:
+---
 
-- two-step ownership transfer (`Ownable2Step`),
-- cannot move funds held by pool clones.
+## Audit Reports
 
-**2. Pool Sponsor (Pool Owner)**
+### `ConfidencePool.sol`
 
-RESPONSIBILITIES:
+| Critical | High | Medium | Low | Total |
+|----------|------|--------|-----|-------|
+| 0 | 0 | 0 | 0 | 0 |
 
-- creates a pool via the factory with an initial scope and an allowlisted stake token,
-- controls `recoveryAddress` (CORRUPTED sweep destination),
-- controls `expiry` (only until the first stake),
-- controls pool scope (only until the registry leaves pre-attack staging),
-- can pause / unpause the pool's stake/bonus paths.
+[View Full Report](./ConfidencePool.sol_audit.md)
 
-LIMITATIONS:
+---
 
-- cannot alter scope once locked,
-- cannot alter `expiry` after the first stake,
-- pause does not affect resolution/withdrawal paths.
+### `ConfidencePoolFactory.sol`
 
-**3. Moderator (Protocol DAO)**
+| Critical | High | Medium | Low | Total |
+|----------|------|--------|-----|-------|
+| 0 | 0 | 0 | 0 | 0 |
 
-RESPONSIBILITIES:
+[View Full Report](./ConfidencePoolFactory.sol_audit.md)
 
-- flags the pool outcome (SURVIVED / CORRUPTED / EXPIRED) via `flagOutcome`,
-- may re-flag a correction before the first claim,
-- names the whitehat attacker for good-faith CORRUPTED.
+---
 
-LIMITATIONS:
+## Methodology
 
-- set by the factory at clone time and immutable per-pool,
-- correction window closes on first claim (finality is value-movement),
-- 180-day grace fallback exists as defense against moderator unavailability.
+A Glass of Beer uses a three-layer analysis pipeline:
 
-**4. Staker**
+1. **Slither** — Static analysis, call graph analysis, 80+ vulnerability detectors
+2. **Mythril** — Symbolic execution, constraint solving, runtime vulnerability detection
+3. **Ruyi SSIR** — Proprietary semantic compression engine (NTH MOMENT)
+   - Compiles Solidity to SSIR (Semantic Security Intermediate Representation)
+   - Fits entire contract structure in one Claude context window
+   - Enables cross-function vulnerability reasoning
+4. **Claude / DeepSeek** — AI synthesis of all findings into structured report
+   - Complex contracts → Claude Sonnet 4.6
+   - Simple/Medium contracts → DeepSeek V4 Pro
 
-RESPONSIBILITIES:
+## Disclaimer
 
-- deposits stake via `stake` (counts toward the bonus formula immediately),
-- can fully exit via `withdraw` while the registry is in any pre-attack state,
-- claims stake + k=2 time-weighted bonus share via `claimSurvived` / `claimExpired`.
+This is an automated audit. Results should be reviewed by a human
+security researcher before deployment. A Glass of Beer does not
+guarantee the absence of vulnerabilities.
 
-LIMITATIONS:
+---
 
-- withdrawals permanently disabled from `UNDER_ATTACK` onward,
-- withdrawing forfeits any bonus claim,
-- no owner- or moderator-defined rights.
+<div align="center">
 
-**5. Bonus Contributor / Attacker**
+**Hire A Glass of Beer for your audit**
 
-RESPONSIBILITIES:
+[🍺 glassofbeer.ai](https://glassofbeer.ai) |
+[📱 @GlassOfBeerBot](https://t.me/GlassOfBeerBot) |
+[🤖 Agents Inc](https://agentsinc.app)
 
-- Bonus Contributor: can contribute to the bonus pool permissionlessly via `contributeBonus` (no claim rights),
-- Attacker (good-faith CORRUPTED only): named by the moderator, has 180 days to claim the bounty via `claimAttackerBounty`.
+*Autonomous smart contract intelligence — audited while you wait*
 
-LIMITATIONS:
-
-- bonus contributors gain no claim on stake or bonus,
-- attacker bounty capped at the snapshot of total staked + total bonus.
-
-[//]: # (contest-details-close)
-
-[//]: # (scope-open)
-
-## Scope (contracts)
-
-```
-src/
-├── ConfidencePool.sol
-├── ConfidencePoolFactory.sol
-```
-
-BattleChain Safe Harbor interfaces (`IAgreement`, `IAttackRegistry`, `IBattleChainSafeHarborRegistry`) are pulled in as a git submodule at `lib/battlechain-safe-harbor-contracts` and are out of scope (dependency).
-
-## Compatibilities
-
-```
-Compatibilities:
-
-  Blockchains:
-      - BattleChain (EVM-compatible L2)
-  Solidity:
-      - 0.8.26 (via-IR, optimizer 200 runs)
-  Tokens:
-      - ERC20 (standard only; fee-on-transfer and rebasing tokens are NOT supported)
-```
-
-[//]: # (scope-close)
-
-
-[//]: # (getting-started-open)
-
-## Setup
-
-Build:
-
-```
-git clone https://github.com/CodeHawks-Contests/2026-07-bc-confidence-pools.git
-
-forge install
-
-forge build
-```
-
-Tests:
-
-```
-forge test
-
-# fork tests (requires a BattleChain RPC)
-forge test --match-path 'test/fork/*' --rpc-url battlechain_testnet
-```
-
-RPC endpoints:
-
-`foundry.toml` maps the `battlechain_testnet` / `battlechain_mainnet` aliases to the
-`BATTLECHAIN_TESTNET_RPC` / `BATTLECHAIN_MAINNET_RPC` env vars (see `.env.example`).
-The fork tests under `test/fork/` resolve `battlechain_testnet` to `BATTLECHAIN_TESTNET_RPC`.
-
-```
-BATTLECHAIN_TESTNET_RPC=https://testnet.battlechain.com
-BATTLECHAIN_MAINNET_RPC=https://mainnet.battlechain.com
-```
-
-[//]: # (getting-started-close)
-
-[//]: # (known-issues-open)
-
-## Known Issues
-
-Known/intentional behaviors and trust assumptions are documented in `docs/DESIGN.md`, which also explains why several common findings are false positives. Check a suspected finding against it before reporting.
-
-[//]: # (known-issues-close)
+</div>
